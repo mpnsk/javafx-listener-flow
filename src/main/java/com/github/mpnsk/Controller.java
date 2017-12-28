@@ -1,31 +1,68 @@
 package com.github.mpnsk;
 
-import javafx.event.EventHandler;
+import javafx.event.Event;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
-import static javafx.scene.input.MouseEvent.MOUSE_CLICKED;
+import java.util.Stack;
 
 public class Controller {
-    public Button button;
+    public Button button1, forward, backward;
     public Pane pane;
     public CheckBox checkbox;
+    public Label label;
+    private Runnable stage1;
 
     public void initialize() {
-        System.out.println(pane);
-        System.out.println(button);
 
 
-        button.setOnMouseClicked(event -> System.out.println(button));
+        Stack<Runnable> stack = new Stack<>();
 
-        EventHandler<MouseEvent> mouseEventEventHandler = event -> {
-            System.out.println(pane);
+        Runnable stage4 = () -> {
+            label.setText("stage 4");
+            button1.setOnMouseClicked(event -> {
+                button1.setOnMouseClicked(Event::consume);
+                stack.empty();
+                stack.push(stage1).run();
+            });
         };
-        checkbox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) button.addEventHandler(MOUSE_CLICKED, mouseEventEventHandler);
-            else button.removeEventHandler(MOUSE_CLICKED, mouseEventEventHandler);
-        });
+
+        Runnable stage3 = () -> {
+            label.setText("stage3");
+            forward.setOnMouseClicked(event -> {
+                forward.setOnMouseClicked(Event::consume);
+                stack.push(stage4).run();
+            });
+            backward.setOnMouseClicked(event -> {
+                backward.setOnMouseClicked(Event::consume);
+                stack.pop();
+                stack.peek().run();
+
+            });
+        };
+        Runnable stage2 = () -> {
+            label.setText("stage2");
+            forward.setOnMouseClicked(event -> {
+                forward.setOnMouseClicked(Event::consume);
+                stack.push(stage3).run();
+            });
+        };
+        stage1 = () -> {
+            label.setText("stage1");
+            button1.setOnMouseClicked(event -> {
+                button1.setOnMouseClicked(Event::consume);
+                stack.push(stage2).run();
+            });
+
+        };
+        stack.add(stage1);
+        stack.peek().run();
+    }
+
+    public void mousePressed(MouseEvent mouseEvent) {
+
     }
 }
