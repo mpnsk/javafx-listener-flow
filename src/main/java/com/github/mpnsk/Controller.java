@@ -26,7 +26,6 @@ public class Controller {
             rectangle.setOnMouseExited(event -> {
                 rectangle.setOnMouseExited(null);
                 System.out.println(event.getEventType());
-                assert line != null;
                 removeLine(line);
                 stack.pop();
                 stack.peek().run();
@@ -37,17 +36,16 @@ public class Controller {
             line = createLine();
             rectangle.setOnMouseEntered(event -> {
                 rectangle.setOnMouseEntered(null);
-                System.out.println(event.getEventType());
+                System.out.println(event.getEventType() + " : " + event.getPickResult().getIntersectedNode());
                 stack.push(stage3_enter_rectangle).run();
             });
             pane.setOnMouseClicked(event -> {
                 pane.setOnMouseClicked(null);
                 rectangle.setOnMouseEntered(null);
                 removeLine(line);
-                System.out.println(event.getEventType());
+                System.out.println(event.getEventType() + " : " + event.getPickResult().getIntersectedNode());
                 label.setText("no stage");
                 stack.empty();
-                assert stage1_init != null;
                 stack.push(stage1_init).run();
             });
         };
@@ -56,7 +54,7 @@ public class Controller {
             circle.setOnMouseClicked(event -> {
                 circle.setOnMouseClicked(null);
                 event.consume();
-                System.out.println(event.getEventType());
+                System.out.println(event.getEventType() + " : " + event.getPickResult().getIntersectedNode());
                 stack.push(stage2_create_line ).run();
             });
 
