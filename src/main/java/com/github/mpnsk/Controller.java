@@ -13,16 +13,16 @@ public class Controller {
     public Label label;
     public Circle circle;
     public Rectangle rectangle;
-    private Runnable stage1;
+    private Runnable stage1_init;
     private Line line;
 
     public void initialize() {
 
         Stack<Runnable> stack = new Stack<>();
 
-        Runnable rectangleMouseEntered = () -> {
+        Runnable stage3_enter_rectangle = () -> {
             highlightRectangle();
-            label.setText("rectangleMouseEntered");
+            label.setText("stage3_enter_rectangle");
             rectangle.setOnMouseExited(event -> {
                 rectangle.setOnMouseExited(null);
                 System.out.println(event.getEventType());
@@ -32,13 +32,13 @@ public class Controller {
                 stack.peek().run();
             });
         };
-        Runnable s2DraggingLine = () -> {
-            label.setText("s2DraggingLine");
+        Runnable stage2_create_line = () -> {
+            label.setText("stage2_create_line ");
             line = createLine();
             rectangle.setOnMouseEntered(event -> {
                 rectangle.setOnMouseEntered(null);
                 System.out.println(event.getEventType());
-                stack.push(rectangleMouseEntered).run();
+                stack.push(stage3_enter_rectangle).run();
             });
             pane.setOnMouseClicked(event -> {
                 pane.setOnMouseClicked(null);
@@ -47,21 +47,21 @@ public class Controller {
                 System.out.println(event.getEventType());
                 label.setText("no stage");
                 stack.empty();
-                assert stage1 != null;
-                stack.push(stage1).run();
+                assert stage1_init != null;
+                stack.push(stage1_init).run();
             });
         };
-        stage1 = () -> {
-            label.setText("stage1");
+        stage1_init = () -> {
+            label.setText("stage1_init");
             circle.setOnMouseClicked(event -> {
                 circle.setOnMouseClicked(null);
                 event.consume();
                 System.out.println(event.getEventType());
-                stack.push(s2DraggingLine).run();
+                stack.push(stage2_create_line ).run();
             });
 
         };
-        stack.push(stage1).run();
+        stack.push(stage1_init).run();
     }
 
     private void highlightRectangle() {
