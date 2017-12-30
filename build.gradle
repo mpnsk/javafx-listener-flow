@@ -1,5 +1,5 @@
 plugins {
-    id 'io.franzbecker.gradle-lombok' version '1.11'
+//    id 'io.franzbecker.gradle-lombok' version '1.11'
     id 'application'
 }
 mainClassName = 'com.github.mpnsk.Main'
@@ -15,10 +15,10 @@ repositories {
     mavenCentral()
 }
 
-lombok {
-    version = '1.16.18'
-    sha256 = ''
-}
+//lombok {
+//    version = '1.16.18'
+//    sha256 = ''
+//}
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
