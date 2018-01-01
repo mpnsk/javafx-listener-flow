@@ -32,7 +32,7 @@ public class Controller {
             });
         };
         Runnable stage2_create_line = () -> {
-            label.setText("stage2_create_line ");
+            label.setText("stage2_create_line");
             line = createLine();
             rectangle.setOnMouseEntered(event -> {
                 rectangle.setOnMouseEntered(null);
