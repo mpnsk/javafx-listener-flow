@@ -15,6 +15,9 @@ repositories {
     mavenCentral()
 }
 
+tasks.withType(JavaCompile) {
+    options.incremental = true
+}
 //lombok {
 //    version = '1.16.18'
 //    sha256 = ''
